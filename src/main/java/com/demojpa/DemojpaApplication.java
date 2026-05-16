@@ -1,13 +1,103 @@
 package com.demojpa;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
-public class DemojpaApplication {
+import com.demojpa.models.Categoria;
+import com.demojpa.repository.ICategoriaRepository;
 
+@SpringBootApplication
+public class DemojpaApplication implements CommandLineRunner {
+
+	@Autowired
+	private ICategoriaRepository repoCategoria ;
+	
+	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(DemojpaApplication.class, args);
+		
+		
+		
+		
 	}
 
+	
+
+	@Override
+	public void run(String... args) throws Exception {
+		// TODO Auto-generated method stub
+		//testConexion();
+		//guardar();
+		//buscarPorId();
+		//modificar();
+		//eliminarPorId();
+		//cantidadCategoria();
+		//eliminarTodo();
+		buscarTodos();
+	}
+	
+	private void buscarTodos () {
+		Iterable<Categoria> categoria =repoCategoria.findAll();
+		for (Categoria cat : categoria)
+			System.out.println(cat.getNombre()+ "" + cat.getDescripcion());
+	}
+
+	
+	private void eliminarTodo() {
+		repoCategoria.deleteAll();
+	}
+	
+	private void cantidadCategoria() {
+		long cantidad = repoCategoria.count();
+		System.out.println("cantidad" + cantidad);
+	}
+	
+	private void eliminarPorId() {
+		repoCategoria.deleteById(1);
+	}
+	
+	
+	private void modificar() {
+		Optional<Categoria> optional = repoCategoria.findById(1);
+		if (optional.isPresent()) {
+			Categoria catTemp = new Categoria();
+			catTemp = optional.get();
+			catTemp.setNombre("Caminatas en el volcan 1");
+			catTemp.setDescripcion("Caminatas exigentes");
+			repoCategoria.save(catTemp);
+			System.out.println(optional.get());
+		}else
+			System.out.println("Categoria no encontrada");
+	}
+	
+	private void buscarPorId() {
+		
+		Optional<Categoria> optional = repoCategoria.findById(1);
+		if (optional.isPresent())
+			System.out.println(optional.get().getNombre());
+		else
+			System.out.println("Categoria no encontrada");
+	}
+	
+	
+	private void guardar() {
+		Categoria categoria = new Categoria();
+		categoria.setNombre("Trips en la playa");
+		categoria.setDescripcion("Todo tipo de paseos en la playa");
+		repoCategoria.save(categoria);
+	}
+	
+	
+	private void  testConexion(){
+		
+		if(repoCategoria != null)
+		System.out.println(" conexion exitosa" + repoCategoria);
+		else
+			System.out.println("Error en conexion");
+}
 }
