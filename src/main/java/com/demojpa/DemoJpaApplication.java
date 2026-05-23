@@ -26,7 +26,7 @@ import com.demojpa.repository.IUsuariosRepository;
 // extend es herencia
 // implements es Abstraccion
 
-public class DemojpaApplication implements CommandLineRunner {
+public class DemoJpaApplication implements CommandLineRunner {
 	
 	
 	@Autowired
@@ -42,7 +42,7 @@ public class DemojpaApplication implements CommandLineRunner {
 	private IUsuariosRepository repoUsuario;
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemojpaApplication.class, args);
+		SpringApplication.run(DemoJpaApplication.class, args);
 
 	}
 
